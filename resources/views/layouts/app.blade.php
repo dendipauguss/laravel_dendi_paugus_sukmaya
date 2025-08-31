@@ -39,7 +39,15 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav me-auto">
-
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/home') }}">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/rumah-sakit') }}">Rumah Sakit</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/pasien') }}">Pasien</a>
+                            </li>
                         </ul>
 
                         <!-- Right Side Of Navbar -->
@@ -83,6 +91,13 @@
                 </div>
             </nav>
             <main class="py-4">
+                {{-- <div class="container">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ url('/') }}">{{ }}</a></li>
+                        </ol>
+                    </nav>
+                </div> --}}
                 @yield('content')
             </main>
         </div>

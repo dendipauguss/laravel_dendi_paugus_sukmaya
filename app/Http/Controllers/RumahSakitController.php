@@ -3,74 +3,61 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\RumahSakit;
 
 class RumahSakitController extends Controller
 {
-    public function index() {}
+    public function index()
+    {
+        $rumah_sakit = RumahSakit::all();
+        return view('rumah_sakit.index', compact('rumah_sakit'));
+    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_rumah_sakit' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'email' => 'nullable|email',
+            'telepon' => 'nullable|string|max:20',
+        ]);
+
+        $rs = RumahSakit::create($request->all());
+        return response()->json($rs);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $rs = RumahSakit::find($id);
+        if (!$rs) return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        return response()->json($rs);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $rs = RumahSakit::find($id);
+        if (!$rs) return response()->json(['error' => 'Data tidak ditemukan'], 404);
+
+        $rs->update($request->all());
+        return response()->json($rs);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $rs = RumahSakit::find($id);
+        if (!$rs) return response()->json(['error' => 'Data tidak ditemukan'], 404);
+
+        $rs->delete();
+        return response()->json(['success' => true]);
     }
 }
