@@ -26,70 +26,73 @@ class PasienController extends Controller
         return view('pasien.index', compact('pasien', 'rumahSakit'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_pasien' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'no_telpon' => 'required|string|max:20',
+            'rumah_sakit_id' => 'required|exists:rumah_sakit,id',
+        ]);
+
+        $pasien = Pasien::create([
+            'nama_pasien' => $request->nama_pasien,
+            'alamat' => $request->alamat,
+            'no_telpon' => $request->no_telpon,
+            'rumah_sakit_id' => $request->rumah_sakit_id,
+        ]);
+
+        $pasien->load('rumahSakit'); // supaya relasi RS bisa dikirim
+
+        return response()->json($pasien);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $pasien = Pasien::find($id);
+        if (!$pasien) return response()->json(['error' => 'Data tidak ditemukan'], 404);
+
+        return response()->json($pasien);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $pasien = Pasien::find($id);
+        if (!$pasien) return response()->json(['error' => 'Data tidak ditemukan'], 404);
+
+        $pasien->update([
+            'nama_pasien' => $request->nama_pasien,
+            'alamat' => $request->alamat,
+            'no_telpon' => $request->no_telpon,
+            'rumah_sakit_id' => $request->rumah_sakit_id,
+        ]);
+
+        // Mengembalikan data lengkap termasuk relasi rumahSakit
+        $pasien->load('rumahSakit');
+
+        return response()->json($pasien);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $pasien = Pasien::find($id);
+
+        if (!$pasien) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+
+        $pasien->delete();
+
+        return response()->json(['success' => true]);
     }
 }
