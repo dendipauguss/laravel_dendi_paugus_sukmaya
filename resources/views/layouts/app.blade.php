@@ -37,18 +37,23 @@
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <!-- Left Side Of Navbar -->
-                        <ul class="navbar-nav me-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/home') }}">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/rumah-sakit') }}">Rumah Sakit</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/pasien') }}">Pasien</a>
-                            </li>
-                        </ul>
+                        @auth
+                            <!-- Left Side Of Navbar -->
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Request::is('home') ? 'active' : '' }}"
+                                        href="{{ url('/home') }}">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Request::is('rumah-sakit') ? 'active' : '' }}"
+                                        href="{{ url('/rumah-sakit') }}">Rumah Sakit</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Request::is('pasien') ? 'active' : '' }}"
+                                        href="{{ url('/pasien') }}">Pasien</a>
+                                </li>
+                            </ul>
+                        @endauth
 
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ms-auto">
